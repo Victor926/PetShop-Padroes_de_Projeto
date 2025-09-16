@@ -8,7 +8,7 @@ package petshop;
  *
  * @author victo
  */
-public class Servico {
+public class Servico implements Detalhavel{
     // ATRIBUTOS
     private String descricao;
     private double valorBase;
@@ -20,7 +20,13 @@ public class Servico {
     }
 
     // METODOS COM SOBRECARGA
-    
+    @Override
+    public void exibirDetalhes() {
+        System.out.println("--- Detalhes do Servico ---");
+        System.out.println("Descricao: " + this.descricao);
+        System.out.println("Valor Base: R$" + this.valorBase);
+        System.out.println("---------------------------");
+    }
     //VALOR SEM DESCONTO
     public double calcularValor() {
         return this.valorBase;

@@ -10,9 +10,11 @@ package petshop;
  */
 public class PetShop {
 
-    /**
-     * @param args the command line arguments
-     */
+    // Novo métodoo que funciona com QUALQUER objeto que implementa Detalhavel
+    public static void imprimirRelatorio(Detalhavel item) {
+        System.out.println("\nGerando relatorio para o item...");
+        item.exibirDetalhes();
+    }
     public static void main(String[] args) {
         // TODO code application logic here
         Cao rex = new Cao("Rex", 3, 15.5, "Macho", RacaCao.LABRADOR);
@@ -28,6 +30,10 @@ public class PetShop {
         ana.adicionarAnimal(mimi);
         System.out.println("---");
 
+        //utilizando interface
+        System.out.println("\n Detalhando o cliente: ");
+        imprimirRelatorio(ana);
+        System.out.printf("\n\n");
 
         Servico banho = new Servico("Banho", 40.0);
         Servico tosa = new Servico("Tosa Completa", 60.0);
@@ -36,6 +42,10 @@ public class PetShop {
         System.out.println("Valor da Tosa (com 10% de desconto): R$" + tosa.calcularValor(10));
         System.out.println("---\n ");
 
+        //utilizando interface
+        System.out.println("\n Detalhando servico: ");
+        imprimirRelatorio(banho);
+        System.out.println("\n \n");
 
         Funcionario veterinario = new Veterinario("Dr. Joao");
         Funcionario recepcionista = new Recepcionista("Joana");

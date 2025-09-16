@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author victo
  */
-public class Cliente {
+public class Cliente implements Detalhavel{
     // ATRIBUTOS
     private String nome;
     private String telefone;
@@ -24,7 +24,14 @@ public class Cliente {
     }
 
     // MÉTODOS
-    
+    @Override
+    public void exibirDetalhes() {
+        System.out.println("--- Detalhes do Cliente ---");
+        System.out.println("Nome: " + this.nome);
+        System.out.println("Telefone: " + this.telefone);
+        System.out.println("Pets cadastrados: " + this.animaisDeEstimacao.size());
+        System.out.println("---------------------------");
+    }
     //RETORNAR LISTA
     public List<Animal> getAnimaisDeEstimacao() {
         return animaisDeEstimacao;
