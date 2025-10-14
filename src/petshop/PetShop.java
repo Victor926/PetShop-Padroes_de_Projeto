@@ -15,6 +15,16 @@ public class PetShop {
         System.out.println("\nGerando relatorio para o item...");
         item.exibirDetalhes();
     }
+    
+    // CLIENTE LSP - Depende apenas do tipo base Funcionario
+    public static void executarServicoFuncionario(Funcionario f) {
+        System.out.println("\n[LSP - CLIENTE DE TAREFAS]");
+        System.out.println("Cliente invoca a tarefa do funcionario: " + f.getNome());
+        f.realizarTarefa(); // Invocação polimórfica que depende do contrato
+        System.out.println("[FIM DO CLIENTE DE TAREFAS]");
+    }
+
+    
     public static void main(String[] args) {
         // TODO code application logic here
         Cao rex = new Cao("Rex", 3, 15.5, "Macho", RacaCao.LABRADOR);
@@ -66,6 +76,32 @@ public class PetShop {
 
         Atendimento atendimento2 = new Atendimento(ana, mimi, tosa, recepcionista, "14/09/2025");
         atendimento2.descreverAtendimento();
+        
+        // --- INICIO DA DEMONSTRAÇÃO LSP ---
+        System.out.println("\n=============================================");
+        System.out.println("  DEMONSTRAÇÃO DO PRINCÍPIO DE LISKOV (LSP)  ");
+        System.out.println("=============================================");
+
+        // Prepara os novos objetos
+        Funcionario estagiarioLSP = new Estagiario("Lucas (LSP OK)");
+        Funcionario invalidoLSP = new FuncionarioInvalido("Josias (LSP VIOLADO)");
+
+        // 1. ADERÊNCIA AO LSP: A substituição é válida.
+        // O cliente 'executarServicoFuncionario' recebe um Estagiario, mas o trata 
+        // como Funcionario. O contrato é cumprido e o programa funciona.
+        executarServicoFuncionario(estagiarioLSP);
+
+        // 2. VIOLAÇÃO AO LSP: A substituição é inválida e pode quebrar o cliente.
+        // O cliente recebe um FuncionarioInvalido, mas espera um Funcionario.
+        // O subtipo quebra o contrato, e o cliente falha.
+        try {
+            executarServicoFuncionario(invalidoLSP);
+        } catch (UnsupportedOperationException e) {
+            System.err.println("\n!!! VIOLAÇÃO DO LSP CAPTURADA !!!");
+            System.err.println("Erro: " + e.getMessage());
+            System.err.println("O subtipo (FuncionarioInvalido) quebrou o contrato do tipo base (Funcionario), causando uma falha inesperada no código cliente.");
+            System.err.println("---------------------------------");
+        }
         
     }
         
