@@ -97,9 +97,9 @@ public class PetShop {
         try {
             executarServicoFuncionario(invalidoLSP);
         } catch (UnsupportedOperationException e) {
-            System.err.println("\n!!! VIOLAÇÃO DO LSP CAPTURADA !!!");
+            System.err.println("\n!!! VIOLAÇAO DO LSP CAPTURADA !!!");
             System.err.println("Erro: " + e.getMessage());
-            System.err.println("O subtipo (FuncionarioInvalido) quebrou o contrato do tipo base (Funcionario), causando uma falha inesperada no código cliente.");
+            System.err.println("O subtipo (FuncionarioInvalido) quebrou o contrato do tipo base (Funcionario), causando uma falha inesperada no codigo cliente.");
             System.err.println("---------------------------------");
         }
         
