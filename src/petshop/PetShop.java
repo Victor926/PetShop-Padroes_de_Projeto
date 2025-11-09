@@ -77,7 +77,48 @@ public class PetShop {
         Atendimento atendimento2 = new Atendimento(ana, mimi, tosa, recepcionista, "14/09/2025");
         atendimento2.descreverAtendimento();
         
-        // --- INICIO DA DEMONSTRAÇÃO LSP ---
+        
+        // ===========================================
+        // INÍCIO DA DEMONSTRAÇÃO DO DIP EM PRODUTOS
+        // ===========================================
+        System.out.println("\n=============================================");
+        System.out.println("  DEMONSTRAÇAO DO PRINCIPIO DE INVERSAO DE DEPENDENCIA (DIP) EM PEDIDOS ");
+        System.out.println("=============================================");
+
+        // Módulos de Baixo Nível (Classes Concretas)
+        Remedio vermifugo = new Remedio("Vermífugo V-Max", 25.50, 80, "01/01/2027");
+        Brinquedo bola = new Brinquedo("Bola de Borracha", 12.00, 50, "Borracha"); 
+        Alimento racaoPremium = new Alimento("Racao Cao Adulto", 89.90, 20, "Frango", "Cachorro");
+        
+        // As variáveis podem ser tipadas como a abstração IProduto
+        IProduto item1 = vermifugo;
+        IProduto item2 = bola;
+        IProduto item3 = racaoPremium;
+
+        System.out.println("\n--- Detalhes e Pedidos (Alto Nivel) ---");
+        
+        // 1. Pedido de Remédio
+        Pedido pedido1 = new Pedido(ana, item1, 1); 
+        imprimirRelatorio(item1);
+        pedido1.finalizarPedido();
+        
+        // 2. Pedido de Brinquedo
+        Pedido pedido2 = new Pedido(ana, item2, 3); 
+        imprimirRelatorio(item2);
+        pedido2.finalizarPedido();
+
+        // 3. Pedido de Alimento
+        Pedido pedido3 = new Pedido(ana, item3, 1); 
+        imprimirRelatorio(item3);
+        pedido3.finalizarPedido();
+
+        //System.out.println("=============================================");
+        // FIM DA DEMONSTRAÇÃO DIP EM PRODUTOS
+        // 
+        // ===========================================
+
+        /*
+        // --- INICIO DA DEMONSTRAÇÃO LSP (EXISTENTE) ---
         System.out.println("\n=============================================");
         System.out.println("  DEMONSTRAÇÃO DO PRINCÍPIO DE LISKOV (LSP)  ");
         System.out.println("=============================================");
@@ -86,22 +127,7 @@ public class PetShop {
         Funcionario estagiarioLSP = new Estagiario("Lucas (LSP OK)");
         Funcionario invalidoLSP = new FuncionarioInvalido("Josias (LSP VIOLADO)");
 
-        // 1. ADERÊNCIA AO LSP: A substituição é válida.
-        // O cliente 'executarServicoFuncionario' recebe um Estagiario, mas o trata 
-        // como Funcionario. O contrato é cumprido e o programa funciona.
-        executarServicoFuncionario(estagiarioLSP);
-
-        // 2. VIOLAÇÃO AO LSP: A substituição é inválida e pode quebrar o cliente.
-        // O cliente recebe um FuncionarioInvalido, mas espera um Funcionario.
-        // O subtipo quebra o contrato, e o cliente falha.
-        try {
-            executarServicoFuncionario(invalidoLSP);
-        } catch (UnsupportedOperationException e) {
-            System.err.println("\n!!! VIOLAÇAO DO LSP CAPTURADA !!!");
-            System.err.println("Erro: " + e.getMessage());
-            System.err.println("O subtipo (FuncionarioInvalido) quebrou o contrato do tipo base (Funcionario), causando uma falha inesperada no codigo cliente.");
-            System.err.println("---------------------------------");
-        }
+        */
         
     }
         
