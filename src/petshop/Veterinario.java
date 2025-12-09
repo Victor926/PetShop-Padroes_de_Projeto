@@ -1,21 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package petshop;
 
-/**
- *
- * @author victo
- */
-public class Veterinario extends Funcionario{
+public class Veterinario extends ColleagueFuncionario {
     
-    public Veterinario(String nome) {
-        super(nome);
+    // O construtor agora exige o Mediador
+    public Veterinario(String nome, IMediadorAtendimento mediador) {
+        super(nome, mediador);
     }
 
     @Override
     public void realizarTarefa() {
         System.out.println(getNome() + " esta realizando um diagnostico clinico.");
+    }
+
+    // MÉTODO DE COMUNICAÇÃO DE PARTIDA (Notifica o Mediator)
+    public void terminarAtendimento() {
+        if (mediador == null) {
+            System.out.println("[Veterinario - ERRO] Nao eh possivel notificar: Mediador nao esta ligado.");
+            return;
+        }
+        // Chamada ao Mediador
+        System.out.println("\n[Veterinario - Acao de Partida] " + getNome() + " notifica o Mediador: Atendimento CONCLUIDO.");
+        mediador.notificar(this, "FIM_ATENDIMENTO");
+    }
+    
+    // MÉTODO DE RESPOSTA (Reage à notificação do Mediator)
+    @Override
+    public void solicitarAcao(String acao) {
+        if (acao.equals("PREPARAR_DIAGNOSTICO")) {
+            System.out.println("<<< [Veterinario - Acao Recebida] " + getNome() + " INICIA o preparo para um novo diagnostico.");
+        }
     }
 }

@@ -57,26 +57,6 @@ public class PetShop {
         imprimirRelatorio(banho);
         System.out.println("\n \n");
 
-        Funcionario veterinario = new Veterinario("Dr. Joao");
-        Funcionario recepcionista = new Recepcionista("Joana");
-        
-        System.out.println("Funcionario: " + veterinario.getNome());
-        veterinario.realizarTarefa();
-        System.out.println("--- \n");
-
-        System.out.println("Funcionario: " + recepcionista.getNome());
-        recepcionista.realizarTarefa();
-        System.out.println("--- \n");
-
-
-        System.out.println("\n--- DETALHES DE UM ATENDIMENTO ESPECIFICO ---");
-        Atendimento atendimento1 = new Atendimento(ana, rex, banho, veterinario, "14/09/2025");
-        atendimento1.descreverAtendimento();
-        System.out.println("------------------------------------------");
-
-        Atendimento atendimento2 = new Atendimento(ana, mimi, tosa, recepcionista, "14/09/2025");
-        atendimento2.descreverAtendimento();
-        
         
         // ===========================================
         // INÍCIO DA DEMONSTRAÇÃO DO DIP EM PRODUTOS
@@ -128,6 +108,109 @@ public class PetShop {
         Funcionario invalidoLSP = new FuncionarioInvalido("Josias (LSP VIOLADO)");
 
         */
+        
+        // ===========================================
+        // INÍCIO DA DEMONSTRAÇÃO DO PADRÃO DECORATOR (NOVA IDEIA)
+        // ===========================================
+        System.out.println("\n=============================================");
+        System.out.println("  DEMONSTRACAO DO PADRAO DECORATOR (Custos)  ");
+        System.out.println("=============================================");
+
+        // 1. Componente Base: Um brinquedo simples
+        IProduto bolinha = new Brinquedo("Bolinha", 30.00, 10, "Plastico");
+        
+        System.out.println("--- 1. PRODUTO BASE ---");
+        System.out.println("Nome: " + bolinha.getNome());
+        System.out.printf("Preco Original: R$%.2f\n", bolinha.getPreco());
+
+        // 2. Decorator 1: Adiciona Custo de Embalagem 
+        IProduto bolinhaDecorado1 = new CustoEmbalagemDecorator(bolinha);
+        
+        System.out.println("\n--- 2. APOS DECORADOR 1 (Embalagem: R$ 5.00) ---");
+        System.out.println("Nome: " + bolinhaDecorado1.getNome());
+        System.out.printf("Preco com Embalagem: R$%.2f\n", bolinhaDecorado1.getPreco());
+        
+        // 3. Decorator 2 (Composição): Adiciona Garantia Estendida (10%) ao produto JÁ EMBALADO
+        // Demonstra a capacidade de composição do Decorator.
+        IProduto bolinhaDuplamenteDecorado = new CustoGarantiaEstendidaDecorator(bolinhaDecorado1);
+
+        System.out.println("\n--- 3. APOS DECORADOR 2 (Garantia: 10%) ---");
+        System.out.println("Nome: " + bolinhaDuplamenteDecorado.getNome());
+        System.out.printf("Preco Final: R$%.2f\n", bolinhaDuplamenteDecorado.getPreco()); // (30.00 + 5.00) * 1.10 = 38.50
+        
+        System.out.println("\n--- 4. Exibindo Detalhes do Objeto Decorado ---");
+        imprimirRelatorio(bolinhaDuplamenteDecorado);
+        
+        // ===========================================
+        // FIM DA DEMONSTRACAO DECORATOR
+        // ===========================================
+        
+
+        System.out.println("Valor do Banho (sem desconto): R$" + banho.calcularValor());
+        System.out.println("Valor da Tosa (com 10% de desconto): R$" + tosa.calcularValor(10));
+        System.out.println("---\n ");
+
+        //utilizando interface
+        System.out.println("\n Detalhando servico: ");
+        imprimirRelatorio(banho);
+        System.out.println("\n \n");
+
+        // --- CORREÇÃO: Usando as novas classes com Mediator=null para compatibilidade ---
+        // As classes agora exigem o Mediador, mesmo que seja nulo, para compilar
+        Veterinario veterinarioTradicional = new Veterinario("Dr. Joao (Tradicional)", null);
+        Recepcionista recepcionistaTradicional = new Recepcionista("Joana (Tradicional)", null);
+        
+        System.out.println("Funcionario: " + veterinarioTradicional.getNome());
+        veterinarioTradicional.realizarTarefa();
+        System.out.println("--- \n");
+
+        System.out.println("Funcionario: " + recepcionistaTradicional.getNome());
+        recepcionistaTradicional.realizarTarefa();
+        System.out.println("--- \n");
+
+
+        System.out.println("\n--- DETALHES DE UM ATENDIMENTO ESPECIFICO ---");
+        // As chamadas legadas funcionam porque Veterinario/Recepcionista ainda são Funcionario
+        Atendimento atendimento1 = new Atendimento(ana, rex, banho, veterinarioTradicional, "14/09/2025");
+        atendimento1.descreverAtendimento();
+        System.out.println("------------------------------------------");
+
+        Atendimento atendimento2 = new Atendimento(ana, mimi, tosa, recepcionistaTradicional, "14/09/2025");
+        atendimento2.descreverAtendimento();
+        
+        
+        // ===========================================
+        // INÍCIO DA DEMONSTRAÇÃO DO PADRÃO MEDIATOR (O NOVO FLUXO)
+        // ===========================================
+        System.out.println("\n=============================================");
+        System.out.println("  DEMONSTRACAO DO PADRAO MEDIATOR (GOF)      ");
+        System.out.println("=============================================");
+        
+        // 1. Instanciar Colleagues com Mediador temporariamente NULO
+        Recepcionista recepcionistaMediator = new Recepcionista("Joana (Mediator)", null);
+        Veterinario veterinarioMediator = new Veterinario("Dr. Joao (Mediator)", null);
+
+        // 2. Instanciar o Mediator (Central de Agendamento) com as referências
+        CentralDeAgendamento central = new CentralDeAgendamento(recepcionistaMediator, veterinarioMediator);
+        
+        // 3. Injetar o Mediador nos Colleagues (Fechando a ligação circular)
+        recepcionistaMediator.mediador = central;
+        veterinarioMediator.mediador = central;
+
+        System.out.println("\n--- FLUXO DE COMUNICACAO VIA MEDIATOR (TORRE DE COMANDO) ---");
+        
+        // CENÁRIO 1: Recepcionista solicita atendimento (Ação de Partida)
+        // O Mediador (Central) recebe e decide o próximo passo (disponibilidade)
+        recepcionistaMediator.solicitarAgendamento();
+
+        // CENÁRIO 2: Veterinário termina um atendimento (Ação de Partida)
+        // O Mediador (Central) notifica a Recepcionista para liberar o próximo cliente.
+        veterinarioMediator.terminarAtendimento();
+
+        // ===========================================
+        // FIM DA DEMONSTRAÇÃO MEDIATOR
+        // ===========================================
+        
         
     }
         
